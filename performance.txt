@@ -1,0 +1,11 @@
+World length 63277
+World generation time: 33.11
+
+World length 94298
+World generation time: 39.64
+
+World length 141616
+World generation time: 50.67
+
+World length 168950
+World generation time: 56.82
