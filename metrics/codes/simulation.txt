@@ -1,0 +1,6 @@
+Simulator time=161.5s pop=168950 days=20 maxmem=1.6G
+Simulator time=135.6s pop=141616 days=20 maxmem=1.45G
+Simulator time=102.5s pop=107422 days=20 maxmem=1.32G
+Simulator time=79.6s  pop=81875 days=20 maxmem=1.25G
+
+
