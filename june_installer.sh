@@ -1,5 +1,7 @@
 echo "Entering HOME..."
 cd $HOME
+echo "Getting the miniconda installer..."
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 echo "Sourcing the installer - install in HOME/USER/miniconda3 as suggested"
 sleep 3
 echo "Answer no to conda initialization, we'll source it later"
