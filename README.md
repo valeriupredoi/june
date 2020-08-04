@@ -11,5 +11,6 @@ cd $HOME/JUNE
 cp june/groups/leisure/cinema.py $HOME
 git checkout refactor/interaction
 cp $HOME/cinema.py june/groups/leisure/cinema.py
+source get_data.sh
 python quickstart.py
 ```
