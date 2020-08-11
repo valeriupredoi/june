@@ -1,0 +1,15 @@
+Use more processes per socket:
+mpirun -v -np 2 -npersocket 2 python run_simulation.py
+
+Run on people but always keep rank == 1 free for receiving (even if not needed here);
+otherwise keep the last processor free and use R processors, R is the rank (or Ncpu - 1);
+
+what I ran (but it's silly since I can use only one processor (rank = [0, 1]),
+and need to keep rank = 1 free for recv:
+
+        for persons in infected_r[0:int(len(infected_r) / 2)]:
+            for person in persons:
+                comm.send(person.health_information, dest=0, tag=0)
+        for persons in infected_r[int(len(infected_r) / 2):]:
+            for person in persons:
+                comm.send(person.health_information, dest=0, tag=0)
