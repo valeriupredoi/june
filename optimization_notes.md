@@ -13,3 +13,4 @@ A collection of first-pass possible optimization notes:
    at all those lists
 - ran with no interactions in `do_timestep()`: usual runtime ~180s, this case ~160s, so interations
   are really cheap (`self.interaction.time_step_for_group`)
+- there are 115 calls to `List()` or conversions via `list(x)`
