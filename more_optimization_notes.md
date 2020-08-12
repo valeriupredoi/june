@@ -51,3 +51,24 @@ follow the money: `self.move_to_active_subgroup` O(>1e-5) -> `leisure.get_subgro
             return subgroup
 ```
 That numba prob is very expensive!
+
+Run1 (50 infect start)
+======================
+`Ttot_prob` = 9.35s
+start: 19:02:42,425
+end: 19:03:51,911
+`Ttot` = 69s -> 13%
+
+Run2 (50 infect start)
+======================
+`Ttot_prob` = 21s
+start: 19:11:25,674
+end: 19:14:44,203
+`Ttot` = 200s -> 10%
+
+Run3 (5000 infect start)
+========================
+`Ttot_prob` = 7.4s
+start: 21:07:32,634
+end: 21:10:20,432
+`Ttot` = 168s -> 4%
