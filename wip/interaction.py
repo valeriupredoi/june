@@ -1,6 +1,7 @@
 import numpy as np
 import yaml
 import numba as nb
+from array import array
 from random import random
 from typing import List
 from functools import partial
@@ -71,10 +72,10 @@ def compute_effective_transmission(
 
 #@nb.jit(nopython=True)
 def infect_susceptibles(effective_transmission_probability, susceptible_ids):
-    infected_ids = np.array([], dtype=np.int)
+    infected_ids = array('l', [])
     for id in susceptible_ids:
         if random() < effective_transmission_probability:
-            infected_ids = np.append(infected_ids, id)
+            infected_ids.append(id)
     return infected_ids
 
 
@@ -216,7 +217,7 @@ class Interaction:
         contact_matrix = self.contact_matrices[group.spec]
         beta = self.beta[group.spec]
         school_years = group.school_years
-        infected_ids = []
+        infected_ids = array('l', [])
         if len(group.subgroups_susceptible) == 1:
             infected_ids = self.time_step_for_subgroup(
                 contact_matrix=contact_matrix,
@@ -232,7 +233,7 @@ class Interaction:
         else:
             for i, subgroup_id in enumerate(group.subgroups_susceptible):
                 susceptible_ids = group.susceptible_ids[i]
-                infected_ids = np.append(infected_ids, self.time_step_for_subgroup(
+                ids = self.time_step_for_subgroup(
                     contact_matrix=contact_matrix,
                     subgroup_transmission_probabilities=group.transmission_probabilities,
                     susceptible_ids=susceptible_ids,
@@ -242,7 +243,9 @@ class Interaction:
                     delta_time=delta_time,
                     subgroup_idx=subgroup_id,
                     school_years=school_years,
-                ))
+                )
+                if ids:
+                    infected_ids += ids
         return infected_ids
 
     def time_step_for_subgroup(
