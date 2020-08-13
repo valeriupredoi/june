@@ -1,4 +1,5 @@
 import logging
+from array import array
 from itertools import chain
 from typing import Optional
 import numpy as np
@@ -234,9 +235,9 @@ class Simulator:
         duration:
             duration of time step
         """
-        ids = []
-        symptoms = []
-        n_secondary_infections = []
+        ids = array('l', [])
+        symptoms = array('l', [])
+        n_secondary_infections = array('f', [])
         medical_care_policies = MedicalCarePolicies.get_active_policies(
             policies=self.activity_manager.policies, date=self.timer.date
         )
@@ -281,7 +282,9 @@ class Simulator:
             return
         self.activity_manager.do_timestep()
 
+        print("XX")
         active_groups = self.activity_manager.active_groups
+        print("XX  ", self.world)
         group_instances = [
             getattr(self.world, group)
             for group in active_groups
@@ -296,7 +299,7 @@ class Simulator:
             f"number of deaths =  {n_people}, "
             f"number of infected = {len(self.world.people.infected)}"
         )
-        infected_ids = np.array([], dtype=np.int)
+        infected_ids = array('l', [])
         first_person_id = self.world.people[0].id
         for group_type in group_instances:
             for group in group_type.members:
@@ -306,8 +309,8 @@ class Simulator:
                     new_infected_ids = self.interaction.time_step_for_group(
                         self.timer.duration, int_group
                     )
-                    if new_infected_ids.any():
-                        n_infected = new_infected_ids.size
+                    if new_infected_ids:
+                        n_infected = len(new_infected_ids)
                         if self.logger is not None:
                             self.logger.accumulate_infection_location(
                                 group.spec, n_infected
@@ -322,9 +325,9 @@ class Simulator:
                                 * infector.health_information.infection.transmission.probability
                                 / tprob_norm
                             )
-                    infected_ids = np.append(infected_ids, new_infected_ids)
+                    if new_infected_ids:
+                        infected_ids += new_infected_ids
 
-        infected_ids = infected_ids.astype(int)
         people_to_infect = self.world.people[infected_ids-first_person_id]
         if n_people != self.world.people.people.size:
             raise SimulatorError(
